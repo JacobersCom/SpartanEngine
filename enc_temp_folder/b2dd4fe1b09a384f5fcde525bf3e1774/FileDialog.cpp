@@ -1238,11 +1238,14 @@ void FileDialog::ItemKeyed(FileDialogItem* item)
 {
     if (ImGui::IsKeyDown(ImGuiKey_F2))
     {
-        m_is_renaming = true;
-        m_rename_request_focus = true;
-        m_rename_select_pending = true;
-        m_rename_buffer = item->GetLabel();
-        m_rename_item_id = item->GetId();
+        if (item->IsDirectory())
+            m_context_menu_id = item->GetId();
+        
+            m_is_renaming = true;
+            m_rename_request_focus = true;
+            m_rename_select_pending = true;
+            m_rename_buffer = item->GetLabel();
+            m_rename_item_id = item->GetId();
     }
 }
 
