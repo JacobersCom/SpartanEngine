@@ -934,6 +934,7 @@ void FileDialog::RenderGridView()
         }
 
         ItemClick(&item);
+        ItemKeyed(&item);
         ItemContextMenu(&item);
 
         ImGui::EndGroup();
@@ -1052,7 +1053,9 @@ void FileDialog::RenderListView()
             }
 
             ItemClick(&item);
+            ItemKeyed(&item);
             ItemContextMenu(&item);
+            
 
             // icon
             ImGui::SameLine(0, 0);
@@ -1229,15 +1232,17 @@ void FileDialog::ItemClick(FileDialogItem* item) const
         m_context_menu_id = item->GetId();
         ImGui::OpenPopup("##context_menu");
     }
-
-    if (ImGui::IsKeyDown(ImGuiKey_F2))
-    {
-        m_context_menu_id = item->GetId();
-        ImGui::OpenPopup("##context_menu");
-        
-    }
 }
 
+void FileDialog::ItemKeyed(FileDialogItem* item)
+{
+    if (ImGui::IsKeyDown(ImGuiKey_F2))
+    {
+        m_is_renaming = true;
+        m_rename_request_focus = true;
+        m_rename_item_id = item->GetId();
+    }
+}
 
 void FileDialog::ItemContextMenu(FileDialogItem* item)
 {
@@ -1626,11 +1631,6 @@ void FileDialog::HandleKeyboardNavigation()
     if (ImGui::IsKeyPressed(ImGuiKey_Escape) && m_type == FileDialog_Type_FileSelection)
     {
         // handled by parent
-    }
-
-    if (ImGui::IsKeyPressed(ImGuiKey_F2))
-    {
-        m_is_renaming = true;
     }
 
     // f5 to refresh

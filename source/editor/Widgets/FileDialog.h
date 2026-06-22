@@ -153,6 +153,7 @@ private:
     // item functionality handling
     void ItemDrag(FileDialogItem* item);
     void ItemClick(FileDialogItem* item) const;
+    void ItemKeyed(FileDialogItem* item);
     void ItemContextMenu(FileDialogItem* item);
 
     // misc
